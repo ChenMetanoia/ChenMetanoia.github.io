@@ -10,6 +10,15 @@ Billy Rick:
       url: https://twitter.com/billyrick
       icon: fab fa-twitter-square
 
+chenwang:
+  name: Chen Wang
+  picture: 
+  twitter:
+  links:
+    - title: Twitter
+      url:
+      icon: fab fa-twitter-square
+
 Cornelius Fiddlebone:
   name: Cornelius Fiddlebone
   picture: /images/bio-photo.jpg
