@@ -1,6 +1,6 @@
 # My personal webpage
 
-> The web template was created by [so-simple-theme][https://github.com/mmistakes/so-simple-theme#structure]
+> The web template was created by [so-simple-theme](https://github.com/mmistakes/so-simple-theme#structure)
 
 ### Web structure 
 ```
