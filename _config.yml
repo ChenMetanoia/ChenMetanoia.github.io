@@ -25,7 +25,7 @@ logo: # path of site logo, e.g. "/images/logo.png"
 date_format: "%B %-d, %Y"
 read_time: # reading time estimates, e.g. true
 words_per_minute: # 200
-mathjax: # MathJax equations, e.g. true
+mathjax: ture # MathJax equations, e.g. true
 google_fonts:
   - name: "Source Sans Pro"
     weights: "400,400i,700,700i"
@@ -87,15 +87,15 @@ defaults:
       share: true
 
 # Site Author
-author:chenwang
-  name:Chen Wang
+author: Chen Wang
+  name: Chen Wang
   picture:
   email:
-  twitter:
+  facebook: ChenMetanoia
   links:
-    - title:
-      url:
-      icon:
+    - title: facebook
+      url: https://www.facebook.com/ChenMetanoia
+      icon: <i class="fab fa-facebook-square"></i>
 
 # Footer Links
 footer_links:

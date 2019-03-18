@@ -10,14 +10,22 @@ Billy Rick:
       url: https://twitter.com/billyrick
       icon: fab fa-twitter-square
 
-chenwang:
+Chen Wang:
   name: Chen Wang
-  picture: 
-  twitter:
+  picture: /images/author.jpg
+  facebook: ChenMetanoia
+  github: ChenMetanoia
+  linkin: chen-wang-metanoia
   links:
-    - title: Twitter
-      url:
-      icon: fab fa-twitter-square
+    - title: github
+      url: https://github.com/ChenMetanoia/
+      icon: fab fa-github-square
+    - title: linkin
+      url : https://www.linkedin.com/in/chen-wang-metanoia/
+      icon: fab fa-linkedin
+    - title: Facebook
+      url: https://www.facebook.com/ChenMetanoia
+      icon: fab fa-facebook-square
 
 Cornelius Fiddlebone:
   name: Cornelius Fiddlebone
