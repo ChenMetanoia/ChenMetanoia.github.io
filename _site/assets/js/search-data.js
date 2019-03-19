@@ -135,7 +135,12 @@ var store = [{
         "url": "http://localhost:4000/docs/hidden-post/"
       },{
         "title": "My First Page",
-        "excerpt":"Hi! I am so excited that I create my first web page. ","categories": ["docs"],
+        "excerpt":"Hi! I am so excited that I created my first web page. The purpose of this personal web page is used to record what I’ve learned and some exciting things, also introduce my self:). I hope you enjoy it! ","categories": ["docs"],
         "tags": [],
         "url": "http://localhost:4000/docs/my-first-page/"
+      },{
+        "title": "Who am I?",
+        "excerpt":"Welcome! Here is my Resume(PDF) Academic VersionLife Version Academic I’m an electrical and electronic engineer turned artificial intelligence engineer who loves investigate pattern recognition and multi-agent reinforcement learning. My latest project builds a passenger flow detection system at the metor hub. Right now, I’m working in a research lab to...","categories": ["docs"],
+        "tags": [],
+        "url": "http://localhost:4000/docs/who-am-i/"
       }]

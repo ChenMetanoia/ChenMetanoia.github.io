@@ -87,15 +87,22 @@ defaults:
       share: true
 
 # Site Author
-author: Chen Wang
-  name: "Chen Wang"
-  picture:
-  email:
+author:
+  name: Chen Wang
+  picture: /images/author.jpg
   facebook: ChenMetanoia
+  github: ChenMetanoia
+  linkin: chen-wang-metanoia
   links:
-    - title: facebook
+    - title: github
+      url: https://github.com/ChenMetanoia/
+      icon: fab fa-github-square
+    - title: linkin
+      url : https://www.linkedin.com/in/chen-wang-metanoia/
+      icon: fab fa-linkedin
+    - title: Facebook
       url: https://www.facebook.com/ChenMetanoia
-      icon: <i class="fab fa-facebook-square"></i>
+      icon: fab fa-facebook-square
 
 # Footer Links
 footer_links:

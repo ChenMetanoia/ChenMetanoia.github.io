@@ -72,6 +72,9 @@ tag_archive_path: "/tags/#"
 #   - vendor/gems/
 #   - vendor/ruby/
 
+gems:
+  - jekyll-last-modified-at
+
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
