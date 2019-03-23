@@ -41,12 +41,12 @@ Our goal is inducing a general function that **fits the training data well and g
 Suppose we have two features: **Weight: (Light, Heavy)** and **Color: (Red, Green, Blue**. The class is **YES** and **NO**. Therefore, we have six objects/instances $$ 2\times3=6 $$. and we have 64 hypotheses/functions $$ 2^6=64 $$.
 
 | **Weight** | **Color** | F1 | ... | F64 |
-|------------|-----------|----|-----|-----|
+|------------|:----------|----|-----|-----|
 | Light      | <span style="color:red">Red</span>       | NO |     | YES |
-| Light      | <span style="color:green">Green</span>     | NO |     | YES |
-| Light      | <span style="color:blue">Blue</span>      | NO |     | YES |
+| Light      | <span style="color:green">Green</span>   | NO |     | YES |
+| Light      | <span style="color:blue">Blue</span>     | NO |     | YES |
 | Heavy		 | <span style="color:red">Red</span>       | NO |     | YES |
-| Heavy		 | <span style="color:green">Green</span>     | NO |     | YES |
-| Heavy      | <span style="color:blue">Blue</span>      | NO |     | YES |
+| Heavy		 | <span style="color:green">Green</span>   | NO |     | YES |
+| Heavy      | <span style="color:blue">Blue</span>     | NO |     | YES |
 
 If we know that <Light, Red> is 'Yes', can you guess how many hypothese left?
