@@ -143,4 +143,9 @@ var store = [{
         "excerpt":"Welcome! Here is my Resume(PDF) Academic VersionLife Version Academic I’m an electrical and electronic engineer turned artificial intelligence engineer who loves investigate pattern recognition and multi-agent reinforcement learning. My latest project builds a passenger flow detection system at the metor hub. Right now, I’m working in a research lab to...","categories": ["docs"],
         "tags": [],
         "url": "http://localhost:4000/docs/who-am-i/"
+      },{
+        "title": "Introduction of Active Machine Learning",
+        "excerpt":"1. Introduce the Main Idea of Transparency and Interaction in Machine Learning Transparency Transparency aims to understand what did the model learn, what do the weights tell us about features and their importance, when an object isclassified by this model, which feature values contributed to each class andhow much. Interaction...","categories": ["docs","Machine Learning"],
+        "tags": ["machine learning","transparency","interaction"],
+        "url": "http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/"
       }]

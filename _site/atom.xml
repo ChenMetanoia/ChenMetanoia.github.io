@@ -1,4 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-18T18:56:50-05:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Mr Third’s log</title><subtitle>Metanoia - Change of mind</subtitle><author><name>Chen Wang</name></author><entry><title type="html">Who am I?</title><link href="http://localhost:4000/docs/who-am-i/" rel="alternate" type="text/html" title="Who am I?" /><published>2019-03-18T00:00:00-05:00</published><updated>2019-03-18T00:00:00-05:00</updated><id>http://localhost:4000/docs/who-am-i</id><content type="html" xml:base="http://localhost:4000/docs/who-am-i/">&lt;h3 id=&quot;welcome-here-is-my-resumepdf&quot;&gt;Welcome! Here is my &lt;a href=&quot;/CV/ChenWang_Resume.pdf&quot; title=&quot;PDF format&quot;&gt;Resume(PDF)&lt;/a&gt;&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-22T22:24:23-05:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">My Awesome Site</title><subtitle>It really is the best.</subtitle><author><name>Chen Wang</name></author><entry><title type="html">Introduction of Active Machine Learning</title><link href="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" rel="alternate" type="text/html" title="Introduction of Active Machine Learning" /><published>2019-03-22T00:00:00-05:00</published><updated>2019-03-22T00:00:00-05:00</updated><id>http://localhost:4000/docs/machine%20learning/Active-Machine-Learning</id><content type="html" xml:base="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/">&lt;h2 id=&quot;1-introduce-the-main-idea-of-transparency-and-interaction-in-machine-learning&quot;&gt;1. Introduce the Main Idea of Transparency and Interaction in Machine Learning&lt;/h2&gt;
+
+&lt;h3 id=&quot;transparency&quot;&gt;Transparency&lt;/h3&gt;
+
+&lt;p&gt;Transparency aims to understand what did the model learn, what do the weights tell us about features and their importance, when an object is
+classified by this model, which feature values contributed to each class and
+how much.&lt;/p&gt;
+
+&lt;h3 id=&quot;interaction&quot;&gt;Interaction&lt;/h3&gt;
+
+&lt;p&gt;If we want to label more objects, which one should we label next? Can we
+provide any rationales into the learning process?&lt;/p&gt;
+
+&lt;h3 id=&quot;why-transparency&quot;&gt;Why Transparency?&lt;/h3&gt;
+
+&lt;p&gt;A perfect example comes from my &lt;a href=&quot;http://www.cs.iit.edu/~mbilgic&quot; target=&quot;blank&quot;&gt;professor Mustafa&lt;/a&gt;. He said that sometimes the machine instead provides a suggestion and gives a reason than deciding for the human. In medical recommender system, the doctor prefers the system provides suspected symptoms to the percentage of the diagnosis. If a cancer detection system only gives “This patient has a 79% chance gets cancer”. Such a result will make confuse the doctor and the patient. In contrast, if this system said: “This patient has a 79% chance gets cancer because I detected the patient has high compression in the spinal cord and pleural effusion”. This diagonal report will be of great help to doctors and dramatically reduce diagnostic time. Moreover, transparency also used in &lt;a href=&quot;http://www.cse.lehigh.edu/~sxie/projects.html&quot;&gt;Trustworthy fraud detection&lt;/a&gt;{target:blank}. We should tell the customer this product evaluation is fake and why at the same time.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-concept-learning&quot;&gt;2. Concept Learning&lt;/h2&gt;
+
+&lt;h3 id=&quot;motivation&quot;&gt;Motivation&lt;/h3&gt;
+
+&lt;p&gt;Different classification task has different purposes such as emails labeled as &lt;strong&gt;spam/~spam&lt;/strong&gt;, patient records labeled as &lt;strong&gt;flu/~flu&lt;/strong&gt; or reviews labeled as &lt;strong&gt;positive/negative&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Our goal is inducing a general function that &lt;strong&gt;fits the training data well and generalized well to unseen or future data&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;general-to-specific-ordering-of-hypothese&quot;&gt;General-to-Specific Ordering of Hypothese&lt;/h3&gt;
+
+&lt;h4 id=&quot;example&quot;&gt;Example&lt;/h4&gt;
+
+&lt;p&gt;Suppose we have two features: &lt;strong&gt;Weight: (Light, Heavy)&lt;/strong&gt; and &lt;strong&gt;Color: (Red, Green, Blue&lt;/strong&gt;. The class is &lt;strong&gt;YES&lt;/strong&gt; and &lt;strong&gt;NO&lt;/strong&gt;. Therefore, we have six objects/instances &lt;script type=&quot;math/tex&quot;&gt;2\times3=6&lt;/script&gt;. and we have 64 hypotheses/functions &lt;script type=&quot;math/tex&quot;&gt;2^6=64&lt;/script&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;Weight&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;Color&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;F1&lt;/th&gt;
+      &lt;th&gt;…&lt;/th&gt;
+      &lt;th&gt;F64&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Light&lt;/td&gt;
+      &lt;td&gt;Red&lt;/td&gt;
+      &lt;td&gt;NO&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;YES&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Light&lt;/td&gt;
+      &lt;td&gt;Green&lt;/td&gt;
+      &lt;td&gt;NO&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;YES&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Light&lt;/td&gt;
+      &lt;td&gt;Blue&lt;/td&gt;
+      &lt;td&gt;NO&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;YES&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Heavy&lt;/td&gt;
+      &lt;td&gt;Red&lt;/td&gt;
+      &lt;td&gt;NO&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;YES&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Heavy&lt;/td&gt;
+      &lt;td&gt;Green&lt;/td&gt;
+      &lt;td&gt;NO&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;YES&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Heavy&lt;/td&gt;
+      &lt;td&gt;Blue&lt;/td&gt;
+      &lt;td&gt;NO&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;YES&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</content><author><name>Chen Wang</name></author><category term="machine learning" /><category term="transparency" /><category term="interaction" /><summary type="html">1. Introduce the Main Idea of Transparency and Interaction in Machine Learning</summary></entry><entry><title type="html">Who am I?</title><link href="http://localhost:4000/docs/who-am-i/" rel="alternate" type="text/html" title="Who am I?" /><published>2019-03-18T00:00:00-05:00</published><updated>2019-03-18T00:00:00-05:00</updated><id>http://localhost:4000/docs/who-am-i</id><content type="html" xml:base="http://localhost:4000/docs/who-am-i/">&lt;h3 id=&quot;welcome-here-is-my-resumepdf&quot;&gt;Welcome! Here is my &lt;a href=&quot;/CV/ChenWang_Resume.pdf&quot; title=&quot;PDF format&quot;&gt;Resume(PDF)&lt;/a&gt;&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&quot;#'Academic'&quot; class=&quot;btn btn--info&quot;&gt;Academic Version&lt;/a&gt;
 &lt;a href=&quot;#&quot; class=&quot;btn btn--danger&quot;&gt;Life Version&lt;/a&gt;&lt;/p&gt;
@@ -68,10 +153,10 @@ expression database (Jaffe). Combined Gabor filter and LBP as feature extraction
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;/[C++/] Robot Development Competition&lt;/strong&gt; (Oct 2014 to Dec 2014). Developed and assembled the robot kits (Micro controller programming). Implemented various functions: The ambient light detection, Buzzer singing, Automatic tracing, Automatic avoid obstacles and Bluetooth control. Won the first prize of the Xi’an Jiaotong-liverpool University robot development competition.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;[C++] Robot Development Competition&lt;/strong&gt; (Oct 2014 to Dec 2014). Developed and assembled the robot kits (Micro controller programming). Implemented various functions: The ambient light detection, Buzzer singing, Automatic tracing, Automatic avoid obstacles and Bluetooth control. Won the first prize of the Xi’an Jiaotong-liverpool University robot development competition.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;/[Android SDK/] Software Design Competition&lt;/strong&gt; (Sep 2014 to Nov 2014). Developed a smartphone application which enables multiple clients to make a group clock. Implemented overall Android application logic and wrote API server for community service. Won the third prize of the Xi’an Jiaotong-liverpool University software design competition.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;[Android SDK] Software Design Competition&lt;/strong&gt; (Sep 2014 to Nov 2014). Developed a smartphone application which enables multiple clients to make a group clock. Implemented overall Android application logic and wrote API server for community service. Won the third prize of the Xi’an Jiaotong-liverpool University software design competition.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
@@ -1103,9 +1188,4 @@ Capitalized text
     &lt;td&gt;
     &lt;/td&gt;
   &lt;/tr&gt;
-&lt;/table&gt;</content><author><name>Chen Wang</name></author><category term="html" /><category term="markup" /><category term="post" /><category term="title" /><summary type="html">Putting special characters in the title should have no adverse effect on the layout or functionality.</summary></entry><entry><title type="html">Markup: Title *with* **Markdown**</title><link href="http://localhost:4000/docs/markdown/markup-title-with-markdown/" rel="alternate" type="text/html" title="Markup: Title *with* **Markdown**" /><published>2013-01-05T00:00:00-06:00</published><updated>2017-03-09T11:25:10-06:00</updated><id>http://localhost:4000/docs/markdown/markup-title-with-markdown</id><content type="html" xml:base="http://localhost:4000/docs/markdown/markup-title-with-markdown/">&lt;p&gt;Using Markdown in the title should have no adverse effect on the layout or functionality.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;page.title&lt;/code&gt; example:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Markup:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Title&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;*with*&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;**Markdown**&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Chen Wang</name></author><category term="css" /><category term="html" /><category term="title" /><summary type="html">Using Markdown in the title should have no adverse effect on the layout or functionality.</summary></entry></feed>
+&lt;/table&gt;</content><author><name>Chen Wang</name></author><category term="html" /><category term="markup" /><category term="post" /><category term="title" /><summary type="html">Putting special characters in the title should have no adverse effect on the layout or functionality.</summary></entry></feed>
