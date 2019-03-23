@@ -16,7 +16,7 @@
   
     
     <!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Introduction of Active Machine Learning | Mr. Third’s blog</title>
+<title>Introduction of Active Machine Learning | My Awesome Site</title>
 <meta name="generator" content="Jekyll v3.7.4" />
 <meta property="og:title" content="Introduction of Active Machine Learning" />
 <meta name="author" content="Chen Wang" />
@@ -25,7 +25,7 @@
 <meta property="og:description" content="1. Introduce the Main Idea of Transparency and Interaction in Machine Learning" />
 <link rel="canonical" href="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" />
 <meta property="og:url" content="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" />
-<meta property="og:site_name" content="Mr. Third’s blog" />
+<meta property="og:site_name" content="My Awesome Site" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-03-22T00:00:00-05:00" />
 <meta name="twitter:card" content="summary" />
@@ -48,7 +48,7 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
-  <link rel="alternate" type="application/atom+xml" title="Mr. Third&#39;s blog" href="/atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="My Awesome Site" href="/atom.xml">
 <!-- start custom head snippets -->
 
 <!-- insert favicons. use http://realfavicongenerator.net/ -->
@@ -83,9 +83,9 @@
     
     
       
-        <div class="site-title animated fadeIn"><a href="/">Mr. Third's blog</a></div>
+        <div class="site-title animated fadeIn"><a href="/">My Awesome Site</a></div>
       
-      <p class="site-description animated fadeIn" itemprop="description">Metanoia-Changing one's mind</p>
+      <p class="site-description animated fadeIn" itemprop="description">It really is the best.</p>
     
   </div>
 </header><!-- /.masthead -->
@@ -223,7 +223,107 @@ provide any rationales into the learning process?</p>
   </tbody>
 </table>
 
-<p>If we know that &lt;Light, Red&gt; is ‘Yes’, can you guess how many hypothese left?</p>
+<p>If we know that &lt;Light, <span style="color:red">Red</span>&gt; is ‘Yes’, can you guess how many hypothese left? The answer is <script type="math/tex">2^5 \times 1 = 32</script>.</p>
+
+<p>The number of hypotheses of &lt;Light, <span style="color:blue">Blue</span> &gt; is ‘Yes,’ or ‘No’ is 16.</p>
+
+<p>For now, we know how to calculate the hypothesis. Let us assume two particular assumptions:</p>
+<ol>
+  <li>‘No’ to everything</li>
+  <li>‘Yes’ to everything</li>
+</ol>
+
+<ul>
+  <li>In particular:
+    <ul>
+      <li><script type="math/tex">% <![CDATA[
+<\phi,\phi> %]]></script>: ‘No’ to everything</li>
+      <li><script type="math/tex">% <![CDATA[
+<?,?> %]]></script>: ‘Yes’ to everything</li>
+      <li>&lt;Light, <span style="color:red">Red</span>&gt;: ‘Yes’ to &lt;Light, <span style="color:red">Red</span>&gt; and ‘No’ to everthing else</li>
+      <li>&lt;Light, <script type="math/tex">?</script>&gt;: ‘Yes’ to anything that is <strong>Light</strong>; ignore <strong>Color</strong>; everything else is ‘No’</li>
+      <li>Combination of one or more of <script type="math/tex">\phi</script> with other feature values is still equivalen <script type="math/tex">% <![CDATA[
+<\phi,\phi> %]]></script> to ‘No’ to everything. E.g., <script type="math/tex">% <![CDATA[
+<\phi, %]]></script><span style="color:red">Red</span><script type="math/tex">></script> is ‘No’ to everything</li>
+    </ul>
+  </li>
+  <li>Most-general hypothesis is where <script type="math/tex">h(x)=Yes\ \forall x \in X</script>: <script type="math/tex">% <![CDATA[
+<?,?> %]]></script></li>
+  <li>Most-specific hypothesis is where <script type="math/tex">h(x)=No\ \forall x \in X</script>: <script type="math/tex">% <![CDATA[
+<\phi,\phi> %]]></script></li>
+  <li>These called <a href="https://en.wikipedia.org/wiki/Version_space_learning" target="blank">hypothesis space</a> (also called <a href="https://en.wikipedia.org/wiki/Version_space_learning" target="blank">version space</a>)</li>
+</ul>
+
+<p>But, how do we search this space efficiently?</p>
+
+<h3 id="algorithms">Algorithms</h3>
+
+<h4 id="1find-s">1.Find-S</h4>
+
+<blockquote>
+  <p>Initialize <script type="math/tex">h</script> to the most specific hypothesis in <script type="math/tex">H</script>
+For each positive training instance <script type="math/tex">x</script></p>
+  <ul>
+    <li>For each attribute constraint <script type="math/tex">a_{i}</script> in <script type="math/tex">h</script>:
+      <ul>
+        <li>If the constraint <script type="math/tex">a_{i}</script> in <script type="math/tex">h</script> is satisfied by <script type="math/tex">x</script></li>
+        <li>Then do nothing</li>
+        <li>Else replace <script type="math/tex">a_{i}</script> in <script type="math/tex">h</script> by the next more general constraint that is satisfied by <script type="math/tex">x</script>
+Output hypothesis <script type="math/tex">h</script></li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
+
+<ul>
+  <li>Warning!!!:
+In that case, Find-S always return the most specific one, but we do not know whether we need the most specific one or the most general one or interval between them. Moreover, what if our training hata has errors or what if the most specific hypothesis in not unique?</li>
+</ul>
+
+<h4 id="2list-then-eliminate">2.List-Then-Eliminate</h4>
+
+<blockquote>
+  <p>VS <script type="math/tex">\leftarrow</script> a list of containing every hypothesis in <script type="math/tex">H</script>
+For each training example, <script type="math/tex">% <![CDATA[
+<x,c(x)> %]]></script></p>
+  <ul>
+    <li>Remove from VS any hypothesis <script type="math/tex">h</script> for which <script type="math/tex">h(x)\neq c(x)</script>
+Output VS</li>
+  </ul>
+</blockquote>
+
+<p>Though this algorithm can output all consistent hypotheses, we need to list all possible explanation. It is possible in small predictions space. However, it is impossible for infinite hypothesis spaces.</p>
+
+<h4 id="3candidate-elimination">3.Candidate-Elimination</h4>
+
+<blockquote>
+  <p>Initialize <script type="math/tex">G</script> to the set of maximally-general hypotheses in <script type="math/tex">H</script>
+Initialize <script type="math/tex">S</script> to the set of maximally-specific hypotheses in <script type="math/tex">H</script>
+For each training example <script type="math/tex">d</script>, do</p>
+  <ul>
+    <li>If <script type="math/tex">d</script> is a positive example
+      <ul>
+        <li>Remove from <script type="math/tex">G</script> any hypothesis that is inconsistent with <script type="math/tex">d</script></li>
+        <li>For each hypothesis <script type="math/tex">s</script> in <script type="math/tex">S</script> that is not consistent with <script type="math/tex">d</script>
+          <ul>
+            <li>Remove <script type="math/tex">s</script> from <script type="math/tex">S</script></li>
+            <li>Add to <script type="math/tex">S</script> to all minimal gegneralizations <script type="math/tex">h</script> of <script type="math/tex">s</script> such that
+              <ul>
+                <li><script type="math/tex">h</script> is consistent with <script type="math/tex">d</script>, and some member of <script type="math/tex">G</script> is more general than <script type="math/tex">h</script></li>
+              </ul>
+            </li>
+            <li>Remove from <script type="math/tex">S</script> any hypothesis that is more general than another hypothesis in <script type="math/tex">S</script></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
+
+<figure class="align-center">
+  <a href="#"><img src="http://localhost:4000/images/Version_space.jpg" alt="" /></a>
+  <figcaption>Version Space, Source: Wikipedia</figcaption>
+</figure>
 
         </div>
 
@@ -257,7 +357,7 @@ provide any rationales into the learning process?</p>
 <!-- end custom footer snippets -->
 <div class="social-icons"><a class="social-icon" href="/atom.xml"><i class="fas fa-rss-square fa-2x" title="Feed"></i></a></div><div class="copyright">
     
-      <p>&copy; 2019 Mr. Third's blog. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+      <p>&copy; 2019 My Awesome Site. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
     
   </div>
 </footer>

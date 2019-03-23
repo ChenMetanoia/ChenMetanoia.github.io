@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-22T23:12:41-05:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Mr. Third’s blog</title><subtitle>Metanoia-Changing one's mind</subtitle><author><name>Chen Wang</name></author><entry><title type="html">Introduction of Active Machine Learning</title><link href="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" rel="alternate" type="text/html" title="Introduction of Active Machine Learning" /><published>2019-03-22T00:00:00-05:00</published><updated>2019-03-22T00:00:00-05:00</updated><id>http://localhost:4000/docs/machine%20learning/Active-Machine-Learning</id><content type="html" xml:base="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/">&lt;h2 id=&quot;1-introduce-the-main-idea-of-transparency-and-interaction-in-machine-learning&quot;&gt;1. Introduce the Main Idea of Transparency and Interaction in Machine Learning&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-23T00:43:32-05:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">My Awesome Site</title><subtitle>It really is the best.</subtitle><author><name>Chen Wang</name></author><entry><title type="html">Introduction of Active Machine Learning</title><link href="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" rel="alternate" type="text/html" title="Introduction of Active Machine Learning" /><published>2019-03-22T00:00:00-05:00</published><updated>2019-03-22T00:00:00-05:00</updated><id>http://localhost:4000/docs/machine%20learning/Active-Machine-Learning</id><content type="html" xml:base="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/">&lt;h2 id=&quot;1-introduce-the-main-idea-of-transparency-and-interaction-in-machine-learning&quot;&gt;1. Introduce the Main Idea of Transparency and Interaction in Machine Learning&lt;/h2&gt;
 
 &lt;h3 id=&quot;transparency&quot;&gt;Transparency&lt;/h3&gt;
 
@@ -85,7 +85,107 @@ provide any rationales into the learning process?&lt;/p&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;If we know that &amp;lt;Light, Red&amp;gt; is ‘Yes’, can you guess how many hypothese left?&lt;/p&gt;</content><author><name>Chen Wang</name></author><category term="machine learning" /><category term="transparency" /><category term="interaction" /><summary type="html">1. Introduce the Main Idea of Transparency and Interaction in Machine Learning</summary></entry><entry><title type="html">Who am I?</title><link href="http://localhost:4000/docs/who-am-i/" rel="alternate" type="text/html" title="Who am I?" /><published>2019-03-18T00:00:00-05:00</published><updated>2019-03-18T00:00:00-05:00</updated><id>http://localhost:4000/docs/who-am-i</id><content type="html" xml:base="http://localhost:4000/docs/who-am-i/">&lt;h3 id=&quot;welcome-here-is-my-resumepdf&quot;&gt;Welcome! Here is my &lt;a href=&quot;/CV/ChenWang_Resume.pdf&quot; title=&quot;PDF format&quot;&gt;Resume(PDF)&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;If we know that &amp;lt;Light, &lt;span style=&quot;color:red&quot;&gt;Red&lt;/span&gt;&amp;gt; is ‘Yes’, can you guess how many hypothese left? The answer is &lt;script type=&quot;math/tex&quot;&gt;2^5 \times 1 = 32&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;The number of hypotheses of &amp;lt;Light, &lt;span style=&quot;color:blue&quot;&gt;Blue&lt;/span&gt; &amp;gt; is ‘Yes,’ or ‘No’ is 16.&lt;/p&gt;
+
+&lt;p&gt;For now, we know how to calculate the hypothesis. Let us assume two particular assumptions:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;‘No’ to everything&lt;/li&gt;
+  &lt;li&gt;‘Yes’ to everything&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In particular:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;\phi,\phi&gt; %]]&gt;&lt;/script&gt;: ‘No’ to everything&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;?,?&gt; %]]&gt;&lt;/script&gt;: ‘Yes’ to everything&lt;/li&gt;
+      &lt;li&gt;&amp;lt;Light, &lt;span style=&quot;color:red&quot;&gt;Red&lt;/span&gt;&amp;gt;: ‘Yes’ to &amp;lt;Light, &lt;span style=&quot;color:red&quot;&gt;Red&lt;/span&gt;&amp;gt; and ‘No’ to everthing else&lt;/li&gt;
+      &lt;li&gt;&amp;lt;Light, &lt;script type=&quot;math/tex&quot;&gt;?&lt;/script&gt;&amp;gt;: ‘Yes’ to anything that is &lt;strong&gt;Light&lt;/strong&gt;; ignore &lt;strong&gt;Color&lt;/strong&gt;; everything else is ‘No’&lt;/li&gt;
+      &lt;li&gt;Combination of one or more of &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; with other feature values is still equivalen &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;\phi,\phi&gt; %]]&gt;&lt;/script&gt; to ‘No’ to everything. E.g., &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;\phi, %]]&gt;&lt;/script&gt;&lt;span style=&quot;color:red&quot;&gt;Red&lt;/span&gt;&lt;script type=&quot;math/tex&quot;&gt;&gt;&lt;/script&gt; is ‘No’ to everything&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Most-general hypothesis is where &lt;script type=&quot;math/tex&quot;&gt;h(x)=Yes\ \forall x \in X&lt;/script&gt;: &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;?,?&gt; %]]&gt;&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Most-specific hypothesis is where &lt;script type=&quot;math/tex&quot;&gt;h(x)=No\ \forall x \in X&lt;/script&gt;: &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;\phi,\phi&gt; %]]&gt;&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;These called &lt;a href=&quot;https://en.wikipedia.org/wiki/Version_space_learning&quot; target=&quot;blank&quot;&gt;hypothesis space&lt;/a&gt; (also called &lt;a href=&quot;https://en.wikipedia.org/wiki/Version_space_learning&quot; target=&quot;blank&quot;&gt;version space&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But, how do we search this space efficiently?&lt;/p&gt;
+
+&lt;h3 id=&quot;algorithms&quot;&gt;Algorithms&lt;/h3&gt;
+
+&lt;h4 id=&quot;1find-s&quot;&gt;1.Find-S&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Initialize &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; to the most specific hypothesis in &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt;
+For each positive training instance &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;For each attribute constraint &lt;script type=&quot;math/tex&quot;&gt;a_{i}&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;:
+      &lt;ul&gt;
+        &lt;li&gt;If the constraint &lt;script type=&quot;math/tex&quot;&gt;a_{i}&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; is satisfied by &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;&lt;/li&gt;
+        &lt;li&gt;Then do nothing&lt;/li&gt;
+        &lt;li&gt;Else replace &lt;script type=&quot;math/tex&quot;&gt;a_{i}&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; by the next more general constraint that is satisfied by &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;
+Output hypothesis &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Warning!!!:
+In that case, Find-S always return the most specific one, but we do not know whether we need the most specific one or the most general one or interval between them. Moreover, what if our training hata has errors or what if the most specific hypothesis in not unique?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;2list-then-eliminate&quot;&gt;2.List-Then-Eliminate&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;VS &lt;script type=&quot;math/tex&quot;&gt;\leftarrow&lt;/script&gt; a list of containing every hypothesis in &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt;
+For each training example, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;x,c(x)&gt; %]]&gt;&lt;/script&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Remove from VS any hypothesis &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; for which &lt;script type=&quot;math/tex&quot;&gt;h(x)\neq c(x)&lt;/script&gt;
+Output VS&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Though this algorithm can output all consistent hypotheses, we need to list all possible explanation. It is possible in small predictions space. However, it is impossible for infinite hypothesis spaces.&lt;/p&gt;
+
+&lt;h4 id=&quot;3candidate-elimination&quot;&gt;3.Candidate-Elimination&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Initialize &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; to the set of maximally-general hypotheses in &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt;
+Initialize &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; to the set of maximally-specific hypotheses in &lt;script type=&quot;math/tex&quot;&gt;H&lt;/script&gt;
+For each training example &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt;, do&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;If &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; is a positive example
+      &lt;ul&gt;
+        &lt;li&gt;Remove from &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; any hypothesis that is inconsistent with &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt;&lt;/li&gt;
+        &lt;li&gt;For each hypothesis &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; that is not consistent with &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt;
+          &lt;ul&gt;
+            &lt;li&gt;Remove &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;&lt;/li&gt;
+            &lt;li&gt;Add to &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; to all minimal gegneralizations &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; of &lt;script type=&quot;math/tex&quot;&gt;s&lt;/script&gt; such that
+              &lt;ul&gt;
+                &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; is consistent with &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt;, and some member of &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; is more general than &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;&lt;/li&gt;
+              &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li&gt;Remove from &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; any hypothesis that is more general than another hypothesis in &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;figure class=&quot;align-center&quot;&gt;
+  &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;http://localhost:4000/images/Version_space.jpg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
+  &lt;figcaption&gt;Version Space, Source: Wikipedia&lt;/figcaption&gt;
+&lt;/figure&gt;</content><author><name>Chen Wang</name></author><category term="machine learning" /><category term="transparency" /><category term="interaction" /><summary type="html">1. Introduce the Main Idea of Transparency and Interaction in Machine Learning</summary></entry><entry><title type="html">Who am I?</title><link href="http://localhost:4000/docs/who-am-i/" rel="alternate" type="text/html" title="Who am I?" /><published>2019-03-18T00:00:00-05:00</published><updated>2019-03-18T00:00:00-05:00</updated><id>http://localhost:4000/docs/who-am-i</id><content type="html" xml:base="http://localhost:4000/docs/who-am-i/">&lt;h3 id=&quot;welcome-here-is-my-resumepdf&quot;&gt;Welcome! Here is my &lt;a href=&quot;/CV/ChenWang_Resume.pdf&quot; title=&quot;PDF format&quot;&gt;Resume(PDF)&lt;/a&gt;&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&quot;#'Academic'&quot; class=&quot;btn btn--info&quot;&gt;Academic Version&lt;/a&gt;
 &lt;a href=&quot;#&quot; class=&quot;btn btn--danger&quot;&gt;Life Version&lt;/a&gt;&lt;/p&gt;
