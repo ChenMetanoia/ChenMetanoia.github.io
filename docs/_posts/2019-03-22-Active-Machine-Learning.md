@@ -42,11 +42,11 @@ Suppose we have two features: **Weight: (Light, Heavy)** and **Color: (Red, Gree
 
 | **Weight** | **Color** | F1 | ... | F64 |
 |------------|-----------|----|-----|-----|
-| Light      | Red       | NO |     | YES |
-| Light      | Green     | NO |     | YES |
-| Light      | Blue      | NO |     | YES |
-| Heavy		 | Red       | NO |     | YES |
-| Heavy		 | Green     | NO |     | YES |
-| Heavy      | Blue      | NO |     | YES |
+| Light      | <span style="color:red">Red</span>       | NO |     | YES |
+| Light      | <span style="color:green">Green</span>     | NO |     | YES |
+| Light      | <span style="color:blue">Blue</span>      | NO |     | YES |
+| Heavy		 | <span style="color:red">Red</span>       | NO |     | YES |
+| Heavy		 | <span style="color:green">Green</span>     | NO |     | YES |
+| Heavy      | <span style="color:blue">Blue</span>      | NO |     | YES |
 
-
+If we know that <Light, Red> is 'Yes', can you guess how many hypothese left?
