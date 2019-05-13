@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.1.2
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Spam review detection by active learning | Mr. Third’s blog</title>
+<meta name="generator" content="Jekyll v3.7.4" />
+<meta property="og:title" content="Spam review detection by active learning" />
+<meta name="author" content="Chen Wang" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="1. Introduction" />
+<meta property="og:description" content="1. Introduction" />
+<link rel="canonical" href="http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/" />
+<meta property="og:url" content="http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/" />
+<meta property="og:site_name" content="Mr. Third’s blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-05-13T00:00:00-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Chen Wang" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/","headline":"Spam review detection by active learning","dateModified":"2019-05-13T00:00:00-04:00","datePublished":"2019-05-13T00:00:00-04:00","author":{"@type":"Person","name":"Chen Wang"},"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/"},"description":"1. Introduction","@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Mr. Third&#39;s blog" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  spam-review-detection-by-active-learning">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/">Home</a></li><li><a href="/docs/who-am-i/">About</a></li><li><a href="/posts/">Posts</a></li><li><a href="/categories/">Categories</a></li><li><a href="/tags/">Tags</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">Mr. Third's blog</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">"There are two possible outcomes: if the result confirms the hypothesis, then you've made a measurement. If the result is contrary to the hypothesis, then you've made a discovery." - Enrico Fermi</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">Spam review detection by active learning
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><img src="/images/author.jpg" class="author-avatar u-photo" alt="Chen Wang"><div class="author-info"><div class="author-name">
+        <em>by</em> <span class="p-name">Chen Wang</span>
+      </div><ul class="author-links"><li class="author-link">
+            <a class="u-url" rel="me" href="https://github.com/ChenMetanoia/"><i class="fab fa-github-square fa-lg" title="github"></i></a>
+          </li><li class="author-link">
+            <a class="u-url" rel="me" href="https://www.linkedin.com/in/chen-wang-metanoia/"><i class="fab fa-linkedin fa-lg" title="linkin"></i></a>
+          </li><li class="author-link">
+            <a class="u-url" rel="me" href="https://www.facebook.com/ChenMetanoia"><i class="fab fa-facebook-square fa-lg" title="Facebook"></i></a>
+          </li></ul>
+    <time class="page-date dt-published" datetime="2019-05-13T00:00:00-04:00"><a class="u-url" href="">May 13, 2019</a>
+</time>
+
+  </div>
+</div>
+
+        
+  <h3 class="page-taxonomies-title">Categories</h3>
+  <ul class="page-taxonomies"><li class="page-taxonomy">docs</li><li class="page-taxonomy">Machine Learning</li>
+  </ul>
+
+
+        
+  <h3 class="page-taxonomies-title">Tags</h3>
+  <ul class="page-taxonomies"><li class="page-taxonomy">machine learning</li><li class="page-taxonomy">transparency</li><li class="page-taxonomy">interaction</li>
+  </ul>
+
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <h2 id="1-introduction">1. Introduction</h2>
+
+<p>People usually like to consult friends or search on recommendation apps before going to the restaurant where they never go. Because we don’t want to have some risk to eat lousy food and wast money, right?</p>
+
+<p>Yelp review statistics as of December 31, 2018, demonstrated that Yelp had collected <a href="https://www.yelp.com/factsheet">177 million reviews</a>. In 2016, Yelp filtered <a href="https://pubsonline.informs.org/doi/pdf/10.1287/mnsc.2015.2304">sixteen percent reviews as spam reviews</a>. Review is crucial because it has a significant impact on our decision. Fraud review could bias customers decision and cause cheating business competition. Therefore, how to effective detect spam or fraud review and tell the user why the review is a suspicious spam review is urgent. The official spam detector does not publish the algorithm in order to prevent spam reviews from finding the vulnerability, however, based on other spam review detector research and official document. The <a href="https://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewFile/5981/6338">Official detector</a> used many features which others cannot obtain such as user behavior, user location, where the review created, repetitive review and others.</p>
+
+<p>We want the problem to come back to itself, the review. Therefore, our detector almost focuses on the text and borrow star information as side features and trying to determine a spam review based on the writing style.
+<strong>Our contribution</strong>:</p>
+<ul>
+  <li>Created a useful filter to help remove most-unlikely spam reviews;</li>
+  <li>Annotated suspicious spam reviews;</li>
+  <li>Based on the pool-based uncertainty sampling active method, we generated a suspicious spam detector;</li>
+  <li>Transparency part, to explain why the review is a suspicious spam review;</li>
+  <li>Find characteristics of suspicious spam review.</li>
+</ul>
+
+<p>The rest of the article is organized as follows: data set analysis, filtering model, active learning, training model and testing, transparency, and summary.</p>
+
+<h2 id="2-data-analysis">2. Data analysis</h2>
+
+<p>Yelp dataset consisted of three sub-datasets which are <em>‘user.csv’</em>. <em>‘business.csv’</em> and <em>‘review.csv’</em>. The user information contains user_id, user_name, review_count, useful and other features. In the business dataset,  The average business rating and review_count are useful features in transparency and annotation. Review dataset has over five million reviews and has no spam review label. Directly annotate suspicious spam review in review dataset is a waste of time.</p>
+
+<p>Distinguish the spam review is hard, but how to find the most non-spam review is easier. Based on our observation and analysis the dataset, the <em>elite</em> users have the most trustfulness review. Four main reasons can proof our determination:</p>
+<ul>
+  <li>Elite users are rare and hard to become;</li>
+  <li>Elite users must provide real personal information such as real personal image and real name;</li>
+  <li>Other friends must nominate elite users;</li>
+  <li>Inappropriate behavior will cause the elite user to lose their elite user title.</li>
+</ul>
+
+<figure class="align-center">
+  <a href="#"><img src="http://localhost:4000/images/user_view_features.png" alt="" /></a>
+  <figcaption>User features</figcaption>
+</figure>
+
+<h2 id="3-filtering-model">3. Filtering model</h2>
+
+<p>The idea of filtering model is:</p>
+<ul>
+  <li>Elite users’ reviews as training samples;</li>
+  <li>Rating as labeling;</li>
+  <li>Non-elite users’ reviews as testing samples;</li>
+  <li>Find all misclassified reviews.</li>
+</ul>
+
+<p>We used high-speed data structure: Pandas library. Based on the user_id and elite feature tags in <em>‘user.csv’</em>, we found all elite users’ user_id. After that, search review in the ‘review.csv’ dataset based on the user_id index.</p>
+
+<p>To prevent unbalanced training dataset, each elite user only chooses two reviews. We selected a total of ten thousand reviews depending on five thousand elite users.</p>
+
+<p>Yelp original rating scope from 1.0 to 5.0 and interval is 0.5, so the entire classes are nine. Too many classes will decrease filtering model performance because every user has a different rating baseline. We normalized classes from nine into three sectors which are <em>like: 4.0-5.0</em>, <em>neutral: 3.0-3.5</em>, and <em>dislike: 1.0-2.5</em>.</p>
+
+<p>Tokenizing every review and puts into the logistic regression to train with ‘L2’ penalty, and labeling as normalized classes. After that, predict tokenized non-elite users’ reviews with same countvector. Compare the predicted result with normalized non-users’ review classes. If the prediction is wrong, that means this review has a significant different writing style with the elite review.</p>
+
+<p>Then we use those misclassified reviews as annotation candidates. Here are two reviews found by this filter and we consider they are suspicious review:</p>
+<ul>
+  <li>‘Ceaser’s salad was <strong>super</strong> salty, pasta and shrimp dish had <strong>no</strong> taste. Huge portions, <strong>no</strong> taste.’ useful: [0] funny: [0] cool: [0] <em>stars: 1 business average stars: 4.0</em> user review_count: [11] user friends: 1 user fans: [1]</li>
+  <li>‘Food was good but service there is not good. This is the second time going there and both times the service was <strong>junk</strong>.’ useful: [0] funny: [0] cool: [0] stars: 2 business average stars: 3.5 <strong>user review_count: [2]</strong></li>
+</ul>
+
+<p>First, those two reviews are short and too general to provide useful information to other users. Besides, bold information are we considered improper features, such as extreme words and strong negative emotion words. Also, the rating from the first user has a high bias with the business average star and the second user only has two reviews. Based on these criteria, we manually annotate data in the next section.</p>
+
+<h2 id="4-active-learning">4. Active learning</h2>
+
+<p>Build pool-based spam review detector followed by below steps:</p>
+<ul>
+  <li>[1.] Check misclassified reviews as candidates;</li>
+  <li>[2.] Annotate 20 suspicious spam samples as the first training samples;</li>
+  <li>[3.] Annotate 20 elite reviews as the non-spam samples;</li>
+  <li>[4.] Logistic regression as training model to train;</li>
+  <li>[5.] Label other 20 suspicious spam samples and predict;</li>
+  <li>[6.] Choose 15 samples which has the most uncertainty samples as training data;</li>
+  <li>[7.] Choose 15 elite reviews as the non-spam samples;</li>
+  <li>[8.] Repeat step 4 to 7 until satisfied.</li>
+</ul>
+
+<p>For the feature part, we borrow z-scored bias rating as side feature, the bias rating defined below:</p>
+
+<script type="math/tex; mode=display">dis_i = r_{bi} - r_{ui}, i \in \sum_{i}^{N}</script>
+
+<script type="math/tex; mode=display">z_{di} = \frac{dis_i - \overline{dis}}{std(dis)}, i \in \sum_{i}^{N}</script>
+
+<p>The first step is to calculate the rating distance between a business with the user. After that, get mean and variance distance for all samples. Get each sample z-scored bias rating in the end.
+Tokenized every sample and contact bias rating features into csr_matrix as our features.
+Finally, we annotated 57 suspicious spam reviews and 57 non-spam reviews according to checked 441 reviews.</p>
+
+<h2 id="5-result-and-transparency">5. Result and transparency</h2>
+
+<p>Table 1 shows top 20 spam features and non-spam features. We can find emotional words in spam features like not, very and shit. Also, spam reviews often evaluate the business from price, place, and service perspectives. While non-spam features, mojority features are mild words. The rating bais has the greatest coefficient and even has six times than the second feature.  Significant rating bais is a key to distinguish whether tha review is a spam review. However, we do not want the classifier to pay more attention to one feature.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Spam_fea</strong></th>
+      <th style="text-align: left"><strong>Spam_coef</strong></th>
+      <th><strong>Non_spam_fea</strong></th>
+      <th><strong>Non_spam_coef</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>dis_star</strong></td>
+      <td style="text-align: left"><span style="color:red">1.7864730423022601</span></td>
+      <td><strong>little</strong></td>
+      <td><span style="color:blue">-0.43644293217441404</span></td>
+    </tr>
+    <tr>
+      <td><strong>not</strong></td>
+      <td style="text-align: left"><span style="color:red">0.45398365028786114</span></td>
+      <td><strong>like</strong></td>
+      <td><span style="color:blue">-0.4186720058050982</span></td>
+    </tr>
+    <tr>
+      <td><strong>and</strong></td>
+      <td style="text-align: left"><span style="color:red">0.33555033149532026</span></td>
+      <td><strong>we</strong></td>
+      <td><span style="color:blue">-0.41430441313552113</span></td>
+    </tr>
+    <tr>
+      <td><strong>the</strong></td>
+      <td style="text-align: left"><span style="color:red">0.30244771815779925</span></td>
+      <td><strong>of the</strong></td>
+      <td><span style="color:blue">-0.4108856046445497</span></td>
+    </tr>
+    <tr>
+      <td><strong>service</strong></td>
+      <td style="text-align: left"><span style="color:red">0.28174880109781575</span></td>
+      <td><strong>it was</strong></td>
+      <td><span style="color:blue">-0.37156178428011205</span></td>
+    </tr>
+    <tr>
+      <td><strong>12</strong></td>
+      <td style="text-align: left"><span style="color:red">0.2768576767105967</span></td>
+      <td><strong>i like</strong></td>
+      <td><span style="color:blue">-0.33252175406732715</span></td>
+    </tr>
+    <tr>
+      <td><strong>to</strong></td>
+      <td style="text-align: left"><span style="color:red">0.261459445856917</span></td>
+      <td><strong>that</strong></td>
+      <td><span style="color:blue">-0.32824804738028057</span></td>
+    </tr>
+    <tr>
+      <td><strong>it</strong></td>
+      <td style="text-align: left"><span style="color:red">0.2525743550474557</span></td>
+      <td><strong>often</strong></td>
+      <td><span style="color:blue">-0.324157713611193</span></td>
+    </tr>
+    <tr>
+      <td><strong>price</strong></td>
+      <td style="text-align: left"><span style="color:red">0.24548080553941218</span></td>
+      <td><strong>were</strong></td>
+      <td><span style="color:blue">-0.3136826697511078</span></td>
+    </tr>
+    <tr>
+      <td><strong>the price</strong></td>
+      <td style="text-align: left"><span style="color:red">0.224074530784817</span></td>
+      <td><strong>it’s</strong></td>
+      <td><span style="color:blue">-0.300996823374483</span></td>
+    </tr>
+    <tr>
+      <td><strong>this place</strong></td>
+      <td style="text-align: left"><span style="color:red">0.21078956122472053</span></td>
+      <td><strong>had</strong></td>
+      <td><span style="color:blue">-0.2922864338488543</span></td>
+    </tr>
+    <tr>
+      <td><strong>i ate</strong></td>
+      <td style="text-align: left"><span style="color:red">0.205664993694128</span></td>
+      <td><strong>of</strong></td>
+      <td><span style="color:blue">-0.2882311690292398</span></td>
+    </tr>
+    <tr>
+      <td><strong>there</strong></td>
+      <td style="text-align: left"><span style="color:red">0.2020027219182647</span></td>
+      <td><strong>of the</strong></td>
+      <td><span style="color:blue">-0.2851251527232189</span></td>
+    </tr>
+    <tr>
+      <td><strong>a</strong></td>
+      <td style="text-align: left"><span style="color:red">0.19835120120135094</span></td>
+      <td><strong>more</strong></td>
+      <td><span style="color:blue">-0.27101235568106163</span></td>
+    </tr>
+    <tr>
+      <td><strong>anyone</strong></td>
+      <td style="text-align: left"><span style="color:red">0.1946593427834893</span></td>
+      <td><strong>in the</strong></td>
+      <td><span style="color:blue">-0.2676366625615579</span></td>
+    </tr>
+    <tr>
+      <td><strong>shit</strong></td>
+      <td style="text-align: left"><span style="color:red">0.19372321587078778</span></td>
+      <td><strong>can</strong></td>
+      <td><span style="color:blue">-0.2403726732932835</span></td>
+    </tr>
+    <tr>
+      <td><strong>i’ll</strong></td>
+      <td style="text-align: left"><span style="color:red">0.19286395394968167</span></td>
+      <td><strong>comes</strong></td>
+      <td><span style="color:blue">-0.23119586398216976</span></td>
+    </tr>
+    <tr>
+      <td><strong>now</strong></td>
+      <td style="text-align: left"><span style="color:red">0.19061090912766987</span></td>
+      <td><strong>great</strong></td>
+      <td><span style="color:blue">-0.22225190957959176</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We also examined the top ten confidence spam reviews and top ten confidence non-spam reviews. The result is beyond our expectation. All top spam reviews often appeared extreme emotion vocabulary, suggest other customers never go to the business, two of reviews also recommend viewers to other business, and has a high bias rate. Figure below shows one review from the top spam reviews.</p>
+
+<figure class="align-center">
+  <a href="#"><img src="http://localhost:4000/images/spam.png" alt="" /></a>
+  <figcaption>Suspicious spam review example</figcaption>
+</figure>
+
+<p>In contrast, the top ten non-spam reviews demonstrate objective evaluation, a wealth of argument, and provides appropriate advice to the business and other users. Below shows one review from the top non-spam reviews.</p>
+
+<figure class="align-center">
+  <a href="#"><img src="http://localhost:4000/images/non-spam.png" alt="" /></a>
+  <figcaption>Non-spam review example</figcaption>
+</figure>
+
+<p>We have no official label, so the be more precise, we are trying to find suspicious spam review rather than spam review. A suspicious spam review often has:</p>
+<ul>
+  <li>Extreme words;</li>
+  <li>Significant rating bias with business average rating;</li>
+  <li>Useless comments( Too general to evaluate a business);</li>
+  <li>Refer other business;</li>
+  <li>Short;</li>
+  <li>User has a few comments;</li>
+  <li>Rare other people think the review is useful, funny or cool.</li>
+</ul>
+
+<p>In the future, we will remove bias rating features and only apply token features. Top features contain many stop words like the, a, it and others. Therefore, filter the stop words. Find official spam label to evaluate the real accuracy.</p>
+
+        </div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/docs/machine%20learning/Active-Machine-Learning/">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Introduction of Active Machine Learning
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="/atom.xml"><i class="fas fa-rss-square fa-2x" title="Feed"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2019 Mr. Third's blog. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  </body>
+
+</html>

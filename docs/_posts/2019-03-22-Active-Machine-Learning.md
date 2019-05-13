@@ -66,7 +66,7 @@ For now, we know how to calculate the hypothesis. Let us assume two particular a
 
 * Most-general hypothesis is where $$h(x)=Yes\ \forall x \in X$$: $$<?,?>$$
 * Most-specific hypothesis is where $$h(x)=No\ \forall x \in X$$: $$<\phi,\phi>$$
-* These called [hypothesis space](https://en.wikipedia.org/wiki/Version_space_learning){:target="blank"} (also called [version space](https://en.wikipedia.org/wiki/Version_space_learning){:target="blank"})
+* These called [hypothesis space](https://en.wikipedia.org/wiki/Version_space_learning){:target="blank"}
 
 But, how do we search this space efficiently?
 

@@ -1,4 +1,239 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-23T23:08:28-05:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Mr. Third’s blog</title><subtitle>&quot;There are two possible outcomes: if the result confirms the hypothesis, then you've made a measurement. If the result is contrary to the hypothesis, then you've made a discovery.&quot; - Enrico Fermi</subtitle><author><name>Chen Wang</name></author><entry><title type="html">Introduction of Active Machine Learning</title><link href="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" rel="alternate" type="text/html" title="Introduction of Active Machine Learning" /><published>2019-03-22T00:00:00-05:00</published><updated>2019-03-22T00:00:00-05:00</updated><id>http://localhost:4000/docs/machine%20learning/Active-Machine-Learning</id><content type="html" xml:base="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/">&lt;h2 id=&quot;1-introduce-the-main-idea-of-transparency-and-interaction-in-machine-learning&quot;&gt;1. Introduce the Main Idea of Transparency and Interaction in Machine Learning&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-05-13T15:19:53-04:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Mr. Third’s blog</title><subtitle>&quot;There are two possible outcomes: if the result confirms the hypothesis, then you've made a measurement. If the result is contrary to the hypothesis, then you've made a discovery.&quot; - Enrico Fermi</subtitle><author><name>Chen Wang</name></author><entry><title type="html">Spam review detection by active learning</title><link href="http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/" rel="alternate" type="text/html" title="Spam review detection by active learning" /><published>2019-05-13T00:00:00-04:00</published><updated>2019-05-13T00:00:00-04:00</updated><id>http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning</id><content type="html" xml:base="http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/">&lt;h2 id=&quot;1-introduction&quot;&gt;1. Introduction&lt;/h2&gt;
+
+&lt;p&gt;People usually like to consult friends or search on recommendation apps before going to the restaurant where they never go. Because we don’t want to have some risk to eat lousy food and wast money, right?&lt;/p&gt;
+
+&lt;p&gt;Yelp review statistics as of December 31, 2018, demonstrated that Yelp had collected &lt;a href=&quot;https://www.yelp.com/factsheet&quot;&gt;177 million reviews&lt;/a&gt;. In 2016, Yelp filtered &lt;a href=&quot;https://pubsonline.informs.org/doi/pdf/10.1287/mnsc.2015.2304&quot;&gt;sixteen percent reviews as spam reviews&lt;/a&gt;. Review is crucial because it has a significant impact on our decision. Fraud review could bias customers decision and cause cheating business competition. Therefore, how to effective detect spam or fraud review and tell the user why the review is a suspicious spam review is urgent. The official spam detector does not publish the algorithm in order to prevent spam reviews from finding the vulnerability, however, based on other spam review detector research and official document. The &lt;a href=&quot;https://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewFile/5981/6338&quot;&gt;Official detector&lt;/a&gt; used many features which others cannot obtain such as user behavior, user location, where the review created, repetitive review and others.&lt;/p&gt;
+
+&lt;p&gt;We want the problem to come back to itself, the review. Therefore, our detector almost focuses on the text and borrow star information as side features and trying to determine a spam review based on the writing style.
+&lt;strong&gt;Our contribution&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Created a useful filter to help remove most-unlikely spam reviews;&lt;/li&gt;
+  &lt;li&gt;Annotated suspicious spam reviews;&lt;/li&gt;
+  &lt;li&gt;Based on the pool-based uncertainty sampling active method, we generated a suspicious spam detector;&lt;/li&gt;
+  &lt;li&gt;Transparency part, to explain why the review is a suspicious spam review;&lt;/li&gt;
+  &lt;li&gt;Find characteristics of suspicious spam review.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The rest of the article is organized as follows: data set analysis, filtering model, active learning, training model and testing, transparency, and summary.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-data-analysis&quot;&gt;2. Data analysis&lt;/h2&gt;
+
+&lt;p&gt;Yelp dataset consisted of three sub-datasets which are &lt;em&gt;‘user.csv’&lt;/em&gt;. &lt;em&gt;‘business.csv’&lt;/em&gt; and &lt;em&gt;‘review.csv’&lt;/em&gt;. The user information contains user_id, user_name, review_count, useful and other features. In the business dataset,  The average business rating and review_count are useful features in transparency and annotation. Review dataset has over five million reviews and has no spam review label. Directly annotate suspicious spam review in review dataset is a waste of time.&lt;/p&gt;
+
+&lt;p&gt;Distinguish the spam review is hard, but how to find the most non-spam review is easier. Based on our observation and analysis the dataset, the &lt;em&gt;elite&lt;/em&gt; users have the most trustfulness review. Four main reasons can proof our determination:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Elite users are rare and hard to become;&lt;/li&gt;
+  &lt;li&gt;Elite users must provide real personal information such as real personal image and real name;&lt;/li&gt;
+  &lt;li&gt;Other friends must nominate elite users;&lt;/li&gt;
+  &lt;li&gt;Inappropriate behavior will cause the elite user to lose their elite user title.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;align-center&quot;&gt;
+  &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;http://localhost:4000/images/user_view_features.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
+  &lt;figcaption&gt;User features&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;3-filtering-model&quot;&gt;3. Filtering model&lt;/h2&gt;
+
+&lt;p&gt;The idea of filtering model is:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Elite users’ reviews as training samples;&lt;/li&gt;
+  &lt;li&gt;Rating as labeling;&lt;/li&gt;
+  &lt;li&gt;Non-elite users’ reviews as testing samples;&lt;/li&gt;
+  &lt;li&gt;Find all misclassified reviews.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We used high-speed data structure: Pandas library. Based on the user_id and elite feature tags in &lt;em&gt;‘user.csv’&lt;/em&gt;, we found all elite users’ user_id. After that, search review in the ‘review.csv’ dataset based on the user_id index.&lt;/p&gt;
+
+&lt;p&gt;To prevent unbalanced training dataset, each elite user only chooses two reviews. We selected a total of ten thousand reviews depending on five thousand elite users.&lt;/p&gt;
+
+&lt;p&gt;Yelp original rating scope from 1.0 to 5.0 and interval is 0.5, so the entire classes are nine. Too many classes will decrease filtering model performance because every user has a different rating baseline. We normalized classes from nine into three sectors which are &lt;em&gt;like: 4.0-5.0&lt;/em&gt;, &lt;em&gt;neutral: 3.0-3.5&lt;/em&gt;, and &lt;em&gt;dislike: 1.0-2.5&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Tokenizing every review and puts into the logistic regression to train with ‘L2’ penalty, and labeling as normalized classes. After that, predict tokenized non-elite users’ reviews with same countvector. Compare the predicted result with normalized non-users’ review classes. If the prediction is wrong, that means this review has a significant different writing style with the elite review.&lt;/p&gt;
+
+&lt;p&gt;Then we use those misclassified reviews as annotation candidates. Here are two reviews found by this filter and we consider they are suspicious review:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;‘Ceaser’s salad was &lt;strong&gt;super&lt;/strong&gt; salty, pasta and shrimp dish had &lt;strong&gt;no&lt;/strong&gt; taste. Huge portions, &lt;strong&gt;no&lt;/strong&gt; taste.’ useful: [0] funny: [0] cool: [0] &lt;em&gt;stars: 1 business average stars: 4.0&lt;/em&gt; user review_count: [11] user friends: 1 user fans: [1]&lt;/li&gt;
+  &lt;li&gt;‘Food was good but service there is not good. This is the second time going there and both times the service was &lt;strong&gt;junk&lt;/strong&gt;.’ useful: [0] funny: [0] cool: [0] stars: 2 business average stars: 3.5 &lt;strong&gt;user review_count: [2]&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;First, those two reviews are short and too general to provide useful information to other users. Besides, bold information are we considered improper features, such as extreme words and strong negative emotion words. Also, the rating from the first user has a high bias with the business average star and the second user only has two reviews. Based on these criteria, we manually annotate data in the next section.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-active-learning&quot;&gt;4. Active learning&lt;/h2&gt;
+
+&lt;p&gt;Build pool-based spam review detector followed by below steps:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;[1.] Check misclassified reviews as candidates;&lt;/li&gt;
+  &lt;li&gt;[2.] Annotate 20 suspicious spam samples as the first training samples;&lt;/li&gt;
+  &lt;li&gt;[3.] Annotate 20 elite reviews as the non-spam samples;&lt;/li&gt;
+  &lt;li&gt;[4.] Logistic regression as training model to train;&lt;/li&gt;
+  &lt;li&gt;[5.] Label other 20 suspicious spam samples and predict;&lt;/li&gt;
+  &lt;li&gt;[6.] Choose 15 samples which has the most uncertainty samples as training data;&lt;/li&gt;
+  &lt;li&gt;[7.] Choose 15 elite reviews as the non-spam samples;&lt;/li&gt;
+  &lt;li&gt;[8.] Repeat step 4 to 7 until satisfied.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For the feature part, we borrow z-scored bias rating as side feature, the bias rating defined below:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;dis_i = r_{bi} - r_{ui}, i \in \sum_{i}^{N}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;z_{di} = \frac{dis_i - \overline{dis}}{std(dis)}, i \in \sum_{i}^{N}&lt;/script&gt;
+
+&lt;p&gt;The first step is to calculate the rating distance between a business with the user. After that, get mean and variance distance for all samples. Get each sample z-scored bias rating in the end.
+Tokenized every sample and contact bias rating features into csr_matrix as our features.
+Finally, we annotated 57 suspicious spam reviews and 57 non-spam reviews according to checked 441 reviews.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-result-and-transparency&quot;&gt;5. Result and transparency&lt;/h2&gt;
+
+&lt;p&gt;Table 1 shows top 20 spam features and non-spam features. We can find emotional words in spam features like not, very and shit. Also, spam reviews often evaluate the business from price, place, and service perspectives. While non-spam features, mojority features are mild words. The rating bais has the greatest coefficient and even has six times than the second feature.  Significant rating bais is a key to distinguish whether tha review is a spam review. However, we do not want the classifier to pay more attention to one feature.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;strong&gt;Spam_fea&lt;/strong&gt;&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;&lt;strong&gt;Spam_coef&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;Non_spam_fea&lt;/strong&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;strong&gt;Non_spam_coef&lt;/strong&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;dis_star&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;1.7864730423022601&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;little&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.43644293217441404&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;not&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.45398365028786114&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;like&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.4186720058050982&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;and&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.33555033149532026&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;we&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.41430441313552113&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;the&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.30244771815779925&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;of the&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.4108856046445497&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;service&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.28174880109781575&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;it was&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.37156178428011205&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;12&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.2768576767105967&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;i like&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.33252175406732715&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;to&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.261459445856917&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;that&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.32824804738028057&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;it&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.2525743550474557&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;often&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.324157713611193&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;price&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.24548080553941218&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;were&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.3136826697511078&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;the price&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.224074530784817&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;it’s&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.300996823374483&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;this place&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.21078956122472053&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;had&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.2922864338488543&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;i ate&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.205664993694128&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;of&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.2882311690292398&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;there&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.2020027219182647&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;of the&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.2851251527232189&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;a&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.19835120120135094&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;more&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.27101235568106163&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;anyone&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.1946593427834893&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;in the&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.2676366625615579&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;shit&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.19372321587078778&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;can&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.2403726732932835&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;i’ll&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.19286395394968167&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;comes&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.23119586398216976&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;strong&gt;now&lt;/strong&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;0.19061090912766987&lt;/span&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;great&lt;/strong&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;span style=&quot;color:blue&quot;&gt;-0.22225190957959176&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;We also examined the top ten confidence spam reviews and top ten confidence non-spam reviews. The result is beyond our expectation. All top spam reviews often appeared extreme emotion vocabulary, suggest other customers never go to the business, two of reviews also recommend viewers to other business, and has a high bias rate. Figure below shows one review from the top spam reviews.&lt;/p&gt;
+
+&lt;figure class=&quot;align-center&quot;&gt;
+  &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;http://localhost:4000/images/spam.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
+  &lt;figcaption&gt;Suspicious spam review example&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;In contrast, the top ten non-spam reviews demonstrate objective evaluation, a wealth of argument, and provides appropriate advice to the business and other users. Below shows one review from the top non-spam reviews.&lt;/p&gt;
+
+&lt;figure class=&quot;align-center&quot;&gt;
+  &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;http://localhost:4000/images/non-spam.png&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
+  &lt;figcaption&gt;Non-spam review example&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;We have no official label, so the be more precise, we are trying to find suspicious spam review rather than spam review. A suspicious spam review often has:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Extreme words;&lt;/li&gt;
+  &lt;li&gt;Significant rating bias with business average rating;&lt;/li&gt;
+  &lt;li&gt;Useless comments( Too general to evaluate a business);&lt;/li&gt;
+  &lt;li&gt;Refer other business;&lt;/li&gt;
+  &lt;li&gt;Short;&lt;/li&gt;
+  &lt;li&gt;User has a few comments;&lt;/li&gt;
+  &lt;li&gt;Rare other people think the review is useful, funny or cool.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the future, we will remove bias rating features and only apply token features. Top features contain many stop words like the, a, it and others. Therefore, filter the stop words. Find official spam label to evaluate the real accuracy.&lt;/p&gt;</content><author><name>Chen Wang</name></author><category term="machine learning" /><category term="transparency" /><category term="interaction" /><summary type="html">1. Introduction</summary></entry><entry><title type="html">Introduction of Active Machine Learning</title><link href="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/" rel="alternate" type="text/html" title="Introduction of Active Machine Learning" /><published>2019-03-22T00:00:00-04:00</published><updated>2019-03-22T00:00:00-04:00</updated><id>http://localhost:4000/docs/machine%20learning/Active-Machine-Learning</id><content type="html" xml:base="http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/">&lt;h2 id=&quot;1-introduce-the-main-idea-of-transparency-and-interaction-in-machine-learning&quot;&gt;1. Introduce the Main Idea of Transparency and Interaction in Machine Learning&lt;/h2&gt;
 
 &lt;h3 id=&quot;transparency&quot;&gt;Transparency&lt;/h3&gt;
 
@@ -113,7 +348,7 @@ provide any rationales into the learning process?&lt;/p&gt;
 &lt;?,?&gt; %]]&gt;&lt;/script&gt;&lt;/li&gt;
   &lt;li&gt;Most-specific hypothesis is where &lt;script type=&quot;math/tex&quot;&gt;h(x)=No\ \forall x \in X&lt;/script&gt;: &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 &lt;\phi,\phi&gt; %]]&gt;&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;These called &lt;a href=&quot;https://en.wikipedia.org/wiki/Version_space_learning&quot; target=&quot;blank&quot;&gt;hypothesis space&lt;/a&gt; (also called &lt;a href=&quot;https://en.wikipedia.org/wiki/Version_space_learning&quot; target=&quot;blank&quot;&gt;version space&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;These called &lt;a href=&quot;https://en.wikipedia.org/wiki/Version_space_learning&quot; target=&quot;blank&quot;&gt;hypothesis space&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;But, how do we search this space efficiently?&lt;/p&gt;
@@ -185,7 +420,7 @@ For each training example &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&g
 &lt;figure class=&quot;align-center&quot;&gt;
   &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;http://localhost:4000/images/Version_space.jpg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
   &lt;figcaption&gt;Version Space, Source: Wikipedia&lt;/figcaption&gt;
-&lt;/figure&gt;</content><author><name>Chen Wang</name></author><category term="machine learning" /><category term="transparency" /><category term="interaction" /><summary type="html">1. Introduce the Main Idea of Transparency and Interaction in Machine Learning</summary></entry><entry><title type="html">Who am I?</title><link href="http://localhost:4000/docs/who-am-i/" rel="alternate" type="text/html" title="Who am I?" /><published>2019-03-18T00:00:00-05:00</published><updated>2019-03-18T00:00:00-05:00</updated><id>http://localhost:4000/docs/who-am-i</id><content type="html" xml:base="http://localhost:4000/docs/who-am-i/">&lt;h3 id=&quot;welcome-here-is-my-resumepdf&quot;&gt;Welcome! Here is my &lt;a href=&quot;/CV/ChenWang_Resume.pdf&quot; title=&quot;PDF format&quot;&gt;Resume(PDF)&lt;/a&gt;&lt;/h3&gt;
+&lt;/figure&gt;</content><author><name>Chen Wang</name></author><category term="machine learning" /><category term="transparency" /><category term="interaction" /><summary type="html">1. Introduce the Main Idea of Transparency and Interaction in Machine Learning</summary></entry><entry><title type="html">Who am I?</title><link href="http://localhost:4000/docs/who-am-i/" rel="alternate" type="text/html" title="Who am I?" /><published>2019-03-18T00:00:00-04:00</published><updated>2019-03-18T00:00:00-04:00</updated><id>http://localhost:4000/docs/who-am-i</id><content type="html" xml:base="http://localhost:4000/docs/who-am-i/">&lt;h3 id=&quot;welcome-here-is-my-resumepdf&quot;&gt;Welcome! Here is my &lt;a href=&quot;/CV/ChenWang_Resume.pdf&quot; title=&quot;PDF format&quot;&gt;Resume(PDF)&lt;/a&gt;&lt;/h3&gt;
 
 &lt;p&gt;&lt;a href=&quot;#'Academic'&quot; class=&quot;btn btn--info&quot;&gt;Academic Version&lt;/a&gt;
 &lt;a href=&quot;#&quot; class=&quot;btn btn--danger&quot;&gt;Life Version&lt;/a&gt;&lt;/p&gt;
@@ -284,7 +519,7 @@ expression database (Jaffe). Combined Gabor filter and LBP as feature extraction
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;life&quot;&gt;Life&lt;/h2&gt;</content><author><name>Chen Wang</name></author><summary type="html">Welcome! Here is my Resume(PDF)</summary></entry><entry><title type="html">My First Page</title><link href="http://localhost:4000/docs/my-first-page/" rel="alternate" type="text/html" title="My First Page" /><published>2019-03-14T00:00:00-05:00</published><updated>2019-03-14T00:00:00-05:00</updated><id>http://localhost:4000/docs/my-first-page</id><content type="html" xml:base="http://localhost:4000/docs/my-first-page/">&lt;p&gt;Hi! I am so excited that I created my first web page. The purpose of this personal web page is used to record what I’ve learned and some exciting things, also introduce my self:). I hope you enjoy it!&lt;/p&gt;</content><author><name>Chen Wang</name></author><summary type="html">Hi! I am so excited that I created my first web page. The purpose of this personal web page is used to record what I’ve learned and some exciting things, also introduce my self:). I hope you enjoy it!</summary></entry><entry><title type="html">Hidden Post</title><link href="http://localhost:4000/docs/hidden-post/" rel="alternate" type="text/html" title="Hidden Post" /><published>2018-02-25T00:00:00-06:00</published><updated>2018-02-25T00:00:00-06:00</updated><id>http://localhost:4000/docs/hidden-post</id><content type="html" xml:base="http://localhost:4000/docs/hidden-post/">&lt;p&gt;This post has YAML Front Matter of &lt;code class=&quot;highlighter-rouge&quot;&gt;hidden: true&lt;/code&gt; and should not appear in &lt;code class=&quot;highlighter-rouge&quot;&gt;paginator.posts&lt;/code&gt;.&lt;/p&gt;</content><author><name>Chen Wang</name></author><summary type="html">This post has YAML Front Matter of hidden: true and should not appear in paginator.posts.</summary></entry><entry><title type="html">MathJax Example</title><link href="http://localhost:4000/docs/mathjax-example/" rel="alternate" type="text/html" title="MathJax Example" /><published>2015-08-10T07:08:50-05:00</published><updated>2015-08-10T07:08:50-05:00</updated><id>http://localhost:4000/docs/mathjax-example</id><content type="html" xml:base="http://localhost:4000/docs/mathjax-example/">&lt;p&gt;&lt;a href=&quot;http://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt; is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\[ ... \]&lt;/code&gt;, and the other for inline mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\( ... \)&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;life&quot;&gt;Life&lt;/h2&gt;</content><author><name>Chen Wang</name></author><summary type="html">Welcome! Here is my Resume(PDF)</summary></entry><entry><title type="html">My First Page</title><link href="http://localhost:4000/docs/my-first-page/" rel="alternate" type="text/html" title="My First Page" /><published>2019-03-14T00:00:00-04:00</published><updated>2019-03-14T00:00:00-04:00</updated><id>http://localhost:4000/docs/my-first-page</id><content type="html" xml:base="http://localhost:4000/docs/my-first-page/">&lt;p&gt;Hi! I am so excited that I created my first web page. The purpose of this personal web page is used to record what I’ve learned and some exciting things, also introduce my self:). I hope you enjoy it!&lt;/p&gt;</content><author><name>Chen Wang</name></author><summary type="html">Hi! I am so excited that I created my first web page. The purpose of this personal web page is used to record what I’ve learned and some exciting things, also introduce my self:). I hope you enjoy it!</summary></entry><entry><title type="html">Hidden Post</title><link href="http://localhost:4000/docs/hidden-post/" rel="alternate" type="text/html" title="Hidden Post" /><published>2018-02-25T00:00:00-05:00</published><updated>2018-02-25T00:00:00-05:00</updated><id>http://localhost:4000/docs/hidden-post</id><content type="html" xml:base="http://localhost:4000/docs/hidden-post/">&lt;p&gt;This post has YAML Front Matter of &lt;code class=&quot;highlighter-rouge&quot;&gt;hidden: true&lt;/code&gt; and should not appear in &lt;code class=&quot;highlighter-rouge&quot;&gt;paginator.posts&lt;/code&gt;.&lt;/p&gt;</content><author><name>Chen Wang</name></author><summary type="html">This post has YAML Front Matter of hidden: true and should not appear in paginator.posts.</summary></entry><entry><title type="html">MathJax Example</title><link href="http://localhost:4000/docs/mathjax-example/" rel="alternate" type="text/html" title="MathJax Example" /><published>2015-08-10T08:08:50-04:00</published><updated>2015-08-10T08:08:50-04:00</updated><id>http://localhost:4000/docs/mathjax-example</id><content type="html" xml:base="http://localhost:4000/docs/mathjax-example/">&lt;p&gt;&lt;a href=&quot;http://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt; is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\[ ... \]&lt;/code&gt;, and the other for inline mathematics &lt;code class=&quot;highlighter-rouge&quot;&gt;\( ... \)&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
 
@@ -302,7 +537,7 @@ expression database (Jaffe). Combined Gabor filter and LBP as feature extraction
 
 &lt;p&gt;The only thing to look out for is the escaping of the backslash when using markdown, so the delimiters become &lt;code class=&quot;highlighter-rouge&quot;&gt;\\[ ... \\]&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( ... \\)&lt;/code&gt; for inline and block maths respectively.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{X}\_{n,p} = \mathbf{A}\_{n,k} \mathbf{B}\_{k,p}&lt;/script&gt;</content><author><name>Chen Wang</name></author><summary type="html">MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics \[ ... \], and the other for inline mathematics \( ... \).</summary></entry><entry><title type="html">Markup: Syntax Highlighting</title><link href="http://localhost:4000/docs/markup-syntax-highlighting/" rel="alternate" type="text/html" title="Markup: Syntax Highlighting" /><published>2013-08-16T00:00:00-05:00</published><updated>2017-03-09T09:27:01-06:00</updated><id>http://localhost:4000/docs/markup-syntax-highlighting</id><content type="html" xml:base="http://localhost:4000/docs/markup-syntax-highlighting/">&lt;p&gt;Syntax highlighting is a feature that displays source code, in different colors and fonts according to the category of terms. This feature facilitates writing in a structured language such as a programming language or a markup language as both structures and syntax errors are visually distinct. Highlighting does not affect the meaning of the text itself; it is intended only for human readers.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{X}\_{n,p} = \mathbf{A}\_{n,k} \mathbf{B}\_{k,p}&lt;/script&gt;</content><author><name>Chen Wang</name></author><summary type="html">MathJax is a simple way of including Tex/LaTex/MathML based mathematics in HTML webpages. To get up and running you need to include the MathJax script in the header of your github pages page, and then write some maths. For LaTex, there are two delimiters you need to know about, one for block or displayed mathematics \[ ... \], and the other for inline mathematics \( ... \).</summary></entry><entry><title type="html">Markup: Syntax Highlighting</title><link href="http://localhost:4000/docs/markup-syntax-highlighting/" rel="alternate" type="text/html" title="Markup: Syntax Highlighting" /><published>2013-08-16T00:00:00-04:00</published><updated>2017-03-09T10:27:01-05:00</updated><id>http://localhost:4000/docs/markup-syntax-highlighting</id><content type="html" xml:base="http://localhost:4000/docs/markup-syntax-highlighting/">&lt;p&gt;Syntax highlighting is a feature that displays source code, in different colors and fonts according to the category of terms. This feature facilitates writing in a structured language such as a programming language or a markup language as both structures and syntax errors are visually distinct. Highlighting does not affect the meaning of the text itself; it is intended only for human readers.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;gfm-code-blocks&quot;&gt;GFM Code Blocks&lt;/h2&gt;
 
@@ -422,7 +657,7 @@ expression database (Jaffe). Combined Gabor filter and LBP as feature extraction
       &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Syntax_highlighting&quot;&gt;http://en.wikipedia.org/wiki/Syntax_highlighting&lt;/a&gt; &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Chen Wang</name></author><category term="code" /><category term="syntax highlighting" /><summary type="html">Post displaying the various ways one can highlight code blocks with Jekyll. Some options include standard Markdown, GitHub Flavored Markdown, and Jekyll's `{% highlight %}` tag.</summary></entry><entry><title type="html">Markup: HTML Elements and Formatting</title><link href="http://localhost:4000/docs/markup/markup-html-elements-and-formatting/" rel="alternate" type="text/html" title="Markup: HTML Elements and Formatting" /><published>2013-01-11T00:00:00-06:00</published><updated>2018-02-01T09:16:49-06:00</updated><id>http://localhost:4000/docs/markup/markup-html-elements-and-formatting</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-html-elements-and-formatting/">&lt;p&gt;A variety of common HTML elements to demonstrate the theme’s stylesheet and verify they have been styled appropriately.&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Chen Wang</name></author><category term="code" /><category term="syntax highlighting" /><summary type="html">Post displaying the various ways one can highlight code blocks with Jekyll. Some options include standard Markdown, GitHub Flavored Markdown, and Jekyll's `{% highlight %}` tag.</summary></entry><entry><title type="html">Markup: HTML Elements and Formatting</title><link href="http://localhost:4000/docs/markup/markup-html-elements-and-formatting/" rel="alternate" type="text/html" title="Markup: HTML Elements and Formatting" /><published>2013-01-11T00:00:00-05:00</published><updated>2018-02-01T10:16:49-05:00</updated><id>http://localhost:4000/docs/markup/markup-html-elements-and-formatting</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-html-elements-and-formatting/">&lt;p&gt;A variety of common HTML elements to demonstrate the theme’s stylesheet and verify they have been styled appropriately.&lt;/p&gt;
 
 &lt;h1 id=&quot;header-one&quot;&gt;Header one&lt;/h1&gt;
 
@@ -711,7 +946,7 @@ expression database (Jaffe). Combined Gabor filter and LBP as feature extraction
 
 &lt;h2 id=&quot;variable-element&quot;&gt;Variable element&lt;/h2&gt;
 
-&lt;p&gt;This allows you to denote &lt;var&gt;variables&lt;/var&gt;.&lt;/p&gt;</content><author><name>Chen Wang</name></author><summary type="html">A variety of common HTML elements to demonstrate the theme’s stylesheet and verify they have been styled appropriately.</summary></entry><entry><title type="html">Markup: Image Alignment</title><link href="http://localhost:4000/docs/markup/markup-image-alignment/" rel="alternate" type="text/html" title="Markup: Image Alignment" /><published>2013-01-10T00:00:00-06:00</published><updated>2018-02-05T15:19:55-06:00</updated><id>http://localhost:4000/docs/markup/markup-image-alignment</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-image-alignment/">&lt;p&gt;The best way to demonstrate the ebb and flow of the various image positioning options is to nestle them snuggly among an ocean of words. Grab a paddle and let’s get started.&lt;/p&gt;
+&lt;p&gt;This allows you to denote &lt;var&gt;variables&lt;/var&gt;.&lt;/p&gt;</content><author><name>Chen Wang</name></author><summary type="html">A variety of common HTML elements to demonstrate the theme’s stylesheet and verify they have been styled appropriately.</summary></entry><entry><title type="html">Markup: Image Alignment</title><link href="http://localhost:4000/docs/markup/markup-image-alignment/" rel="alternate" type="text/html" title="Markup: Image Alignment" /><published>2013-01-10T00:00:00-05:00</published><updated>2018-02-05T16:19:55-05:00</updated><id>http://localhost:4000/docs/markup/markup-image-alignment</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-image-alignment/">&lt;p&gt;The best way to demonstrate the ebb and flow of the various image positioning options is to nestle them snuggly among an ocean of words. Grab a paddle and let’s get started.&lt;/p&gt;
 
 &lt;p&gt;Assign classes with HTML:&lt;/p&gt;
 
@@ -783,7 +1018,7 @@ expression database (Jaffe). Combined Gabor filter and LBP as feature extraction
 
 &lt;p&gt;In just a bit here, you should see the text start to wrap below the right aligned image and settle in nicely. There should still be plenty of room and everything should be sitting pretty. Yeah — Just like that. It never felt so good to be right.&lt;/p&gt;
 
-&lt;p&gt;And that’s a wrap, yo! You survived the tumultuous waters of alignment. Image alignment achievement unlocked!&lt;/p&gt;</content><author><name>Chen Wang</name></author><category term="alignment" /><category term="captions" /><category term="content" /><category term="css" /><category term="image" /><category term="markup" /><summary type="html">The best way to demonstrate the ebb and flow of the various image positioning options is to nestle them snuggly among an ocean of words. Grab a paddle and let’s get started.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/so-simple-sample-image-5.jpg" /></entry><entry><title type="html">Markup: Text Alignment and Transformations</title><link href="http://localhost:4000/docs/markup/markup-text-alignment/" rel="alternate" type="text/html" title="Markup: Text Alignment and Transformations" /><published>2013-01-09T00:00:00-06:00</published><updated>2017-03-09T11:17:03-06:00</updated><id>http://localhost:4000/docs/markup/markup-text-alignment</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-text-alignment/">&lt;p&gt;Sample text to demonstrate alignment and transformation classes.&lt;/p&gt;
+&lt;p&gt;And that’s a wrap, yo! You survived the tumultuous waters of alignment. Image alignment achievement unlocked!&lt;/p&gt;</content><author><name>Chen Wang</name></author><category term="alignment" /><category term="captions" /><category term="content" /><category term="css" /><category term="image" /><category term="markup" /><summary type="html">The best way to demonstrate the ebb and flow of the various image positioning options is to nestle them snuggly among an ocean of words. Grab a paddle and let’s get started.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/so-simple-sample-image-5.jpg" /></entry><entry><title type="html">Markup: Text Alignment and Transformations</title><link href="http://localhost:4000/docs/markup/markup-text-alignment/" rel="alternate" type="text/html" title="Markup: Text Alignment and Transformations" /><published>2013-01-09T00:00:00-05:00</published><updated>2017-03-09T12:17:03-05:00</updated><id>http://localhost:4000/docs/markup/markup-text-alignment</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-text-alignment/">&lt;p&gt;Sample text to demonstrate alignment and transformation classes.&lt;/p&gt;
 
 &lt;p&gt;Easily realign text with alignment classes via HTML:&lt;/p&gt;
 
@@ -867,427 +1102,4 @@ Capitalized text
 
 &lt;p class=&quot;text-truncate&quot;&gt;This is a truncated paragraph of text. Bacon ipsum dolor amet shoulder jowl tail andouille fatback tongue. Ham porchetta kielbasa pork pork chop, tenderloin hamburger meatball. Picanha porchetta swine, brisket salami pork belly burgdoggen. Cupim swine pastrami, chuck tri-tip pork belly jowl shankle alcatra brisket capicola ball tip prosciutto beef ribs doner. Tri-tip bacon ground round pork chop burgdoggen leberkas pork strip steak beef corned beef salami.&lt;/p&gt;
 
-&lt;p class=&quot;small&quot;&gt;Small text&lt;/p&gt;</content><author><name>Chen Wang</name></author><category term="alignment" /><category term="content" /><category term="css" /><category term="markup" /><summary type="html">Sample text to demonstrate alignment and transformation classes.</summary></entry><entry><title type="html">Markup: Title with Special — Characters</title><link href="http://localhost:4000/docs/markup/markup-title-with-special-characters/" rel="alternate" type="text/html" title="Markup: Title with Special&amp;nbsp;---&amp;nbsp;Characters" /><published>2013-01-05T00:00:00-06:00</published><updated>2017-03-09T11:23:27-06:00</updated><id>http://localhost:4000/docs/markup/markup-title-with-special-characters</id><content type="html" xml:base="http://localhost:4000/docs/markup/markup-title-with-special-characters/">&lt;p&gt;Putting special characters in the title should have no adverse effect on the layout or functionality.&lt;/p&gt;
-
-&lt;p&gt;The title above has none-breaking spaces before and after the m-dash.&lt;/p&gt;
-
-&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;ni&quot;&gt;&amp;amp;nbsp;&lt;/span&gt;---&lt;span class=&quot;ni&quot;&gt;&amp;amp;nbsp;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;latin-character-tests&quot;&gt;Latin Character Tests&lt;/h2&gt;
-
-&lt;p&gt;This is a test to see if the fonts used in this theme support basic Latin characters.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tr&gt;
-    &lt;td&gt;
-      !
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      &amp;#8220;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      #
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      $
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      %
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      &amp;amp;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      &amp;#8216;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      (
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      )
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      *
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      +
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      ,
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      &amp;#8211;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      .
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      /
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      1
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      2
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      3
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      4
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      5
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      6
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      7
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      8
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      9
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      :
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      ;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      &amp;gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      =
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      &amp;lt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      ?
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      @
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      A
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      B
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      C
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      D
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      E
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      F
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      G
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      H
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      I
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      J
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      K
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      L
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      M
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      N
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      O
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      P
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      Q
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      R
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      S
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      T
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      U
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      V
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      W
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      X
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      Y
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      Z
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      [
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      ]
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      ^
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      _
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      `
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      a
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      b
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      c
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      d
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      e
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      f
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      g
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      h
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      i
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      j
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      k
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      l
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      m
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      n
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      o
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      p
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      q
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      r
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      s
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      t
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      u
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      v
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      w
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      x
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      y
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      z
-    &lt;/td&gt;
-  &lt;/tr&gt;
-  
-  &lt;tr&gt;
-    &lt;td&gt;
-      {
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      |
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      }
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-      ~
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-    
-    &lt;td&gt;
-    &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;</content><author><name>Chen Wang</name></author><category term="html" /><category term="markup" /><category term="post" /><category term="title" /><summary type="html">Putting special characters in the title should have no adverse effect on the layout or functionality.</summary></entry></feed>
+&lt;p class=&quot;small&quot;&gt;Small text&lt;/p&gt;</content><author><name>Chen Wang</name></author><category term="alignment" /><category term="content" /><category term="css" /><category term="markup" /><summary type="html">Sample text to demonstrate alignment and transformation classes.</summary></entry></feed>

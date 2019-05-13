@@ -148,4 +148,9 @@ var store = [{
         "excerpt":"1. Introduce the Main Idea of Transparency and Interaction in Machine Learning Transparency Transparency aims to understand what did the model learn, what do the weights tell us about features and their importance, when an object isclassified by this model, which feature values contributed to each class andhow much. Interaction...","categories": ["docs","Machine Learning"],
         "tags": ["machine learning","transparency","interaction"],
         "url": "http://localhost:4000/docs/machine%20learning/Active-Machine-Learning/"
+      },{
+        "title": "Spam review detection by active learning",
+        "excerpt":"1. Introduction People usually like to consult friends or search on recommendation apps before going to the restaurant where they never go. Because we don’t want to have some risk to eat lousy food and wast money, right? Yelp review statistics as of December 31, 2018, demonstrated that Yelp had...","categories": ["docs","Machine Learning"],
+        "tags": ["machine learning","transparency","interaction"],
+        "url": "http://localhost:4000/docs/machine%20learning/Yelp-spam-review-detection-in-active-learning/"
       }]
